@@ -1,6 +1,4 @@
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui widgets concurrent
 
 CONFIG += c++11 sdk_no_version_check
 
@@ -10,13 +8,21 @@ CONFIG += c++11 sdk_no_version_check
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    shor.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    shor.h
 
 FORMS += \
     mainwindow.ui
+
+# for Qpp + OpenMP
+DEFINES += NDEBUG HAS_OPENMP
+QMAKE_CXXFLAGS+= -Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include
+QMAKE_LFLAGS += -openmp -L/usr/local/opt/llvm/lib
+LIBS += -lomp #-L /usr/local/lib /usr/local/lib/libomp.dylib
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

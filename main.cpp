@@ -1,15 +1,10 @@
 #include "mainwindow.h"
-
+//#include <iostream>
 #include <QApplication>
-#include <iostream>
-#include "qpp/qpp.h"
 
 int main(int argc, char *argv[])
 {
-    using namespace qpp;
-
-    std::cout << "Hello Quantum++!\nThis is the |0> state:\n";
-    std::cout << disp(0_ket) << '\n';
+//    std::cout << (int)(-3/3u*3) << std::endl;
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
