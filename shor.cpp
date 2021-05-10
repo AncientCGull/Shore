@@ -7,7 +7,13 @@ shor::shor()
 
 void shor::calculate() // number to factor
 {
-    bigint N = 32;
+    QString isOdd = "";
+    if (N % 2 == 0 and N > 29)
+    {
+        N /= 2;
+        emit write(">>N = " + QString::number(N*2) + " was odd, so we can take " + QString::number(N) + " as N");
+        isOdd = "2 ";
+    }
     bigint a = rand(static_cast<bigint>(3), N - 1); // random co-prime with N
     while (gcd(a, N) != 1)
     {
@@ -138,9 +144,9 @@ void shor::calculate() // number to factor
                          QString::number(modpow(a, r, N)) +'\n');
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1))
     {
-        emit write(">> Possible factors: " +
-                             QString::number(gcd(modpow(a, r / 2, N) - 1, N)) + " " +
-                             QString::number(gcd(modpow(a, r / 2, N) + 1, N)) + '\n');
+        emit write(">> Possible factors: " + isOdd +
+                   QString::number(gcd(modpow(a, r / 2, N) - 1, N)) + " " +
+                   QString::number(gcd(modpow(a, r / 2, N) + 1, N)) + '\n');
     }
     else
     {
@@ -151,4 +157,9 @@ void shor::calculate() // number to factor
     // END THIRD POST-PROCESSING STAGE
 
     emit done();
+}
+
+void shor::getNum(bigint num)
+{
+    N = num;
 }

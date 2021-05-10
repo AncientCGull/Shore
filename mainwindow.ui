@@ -27,13 +27,13 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
       <y>40</y>
       <width>206</width>
-      <height>90</height>
+      <height>124</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -84,7 +84,27 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_step">
+       <property name="text">
+        <string>Следующий шаг</string>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_auto">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>210</y>
+      <width>86</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Автошаг</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QThread>
 #include "shor.h"
+#include "controller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,16 +21,20 @@ public:
 
 public slots:
     void writeMsg(QString);
+    void unlockButton();
 
 private slots:
     void on_pushButton_factor_clicked();
 
+    void on_pushButton_step_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QThread shor_thread;
+    Controller* contr;
+    int step = 0;
 
-signals:
-    void start(bigint N);
+//signals:
+//    void start(bigint N);
 
 };
 #endif // MAINWINDOW_H

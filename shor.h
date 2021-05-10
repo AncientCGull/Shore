@@ -17,9 +17,13 @@ class shor : public QObject
 {
     Q_OBJECT
 
+private:
+    bigint N = 32;
+
 public:
     shor();
     void calculate();
+    void getNum(bigint num);
 
 signals:
     void write(QString);

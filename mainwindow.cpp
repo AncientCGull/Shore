@@ -9,18 +9,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    shor* shor_obj = new shor();
-    shor_obj ->moveToThread(&shor_thread);
-    connect(&shor_thread, &QThread::finished, shor_obj, &QObject::deleteLater);
-    connect(&shor_thread, &QThread::started, shor_obj, &shor::calculate);
-    connect(shor_obj, &shor::write, this, &MainWindow::writeMsg);
 }
 
 MainWindow::~MainWindow()
 {
-    shor_thread.quit();
-    shor_thread.wait();
     delete ui;
 }
 
@@ -29,8 +21,46 @@ void MainWindow::writeMsg(QString text)
     ui->textEdit->append(text);
 }
 
+void MainWindow::unlockButton()
+{
+    ui->pushButton_step->setEnabled(true);
+    if (ui->checkBox_auto->isChecked())
+    {
+        on_pushButton_step_clicked();
+    }
+}
+
 
 void MainWindow::on_pushButton_factor_clicked()
 {
-    shor_thread.start();
+    ui->textEdit->clear();
+    step = 0;
+
+    if (contr != nullptr)
+    {
+        delete contr;
+    }
+    contr = new Controller(ui->lineEdit_num->text().toLongLong());
+    connect(contr, &Controller::write, this, &MainWindow::writeMsg);
+    connect(contr, &Controller::unlockButton, this, &MainWindow::unlockButton);
+    contr->start();
+}
+
+void MainWindow::on_pushButton_step_clicked()
+{
+    if (contr != nullptr)
+    {
+        writeMsg(contr->getText(step));
+    }
+    step++;
+
+    if (not contr->check(step))
+    {
+        ui->pushButton_step->setDisabled(true);
+        return;
+    }
+    if (ui->checkBox_auto->isChecked())
+    {
+        on_pushButton_step_clicked();
+    }
 }
