@@ -8,6 +8,7 @@ Controller::Controller(bigint N)
     connect(&shor_thread, &QThread::finished, shor_obj, &QObject::deleteLater);
     connect(&shor_thread, &QThread::started, shor_obj, &shor::calculate);
     connect(shor_obj, &shor::write, this, &Controller::getInfo);
+    connect(shor_obj, &shor::done, this, &Controller::done);
 }
 
 Controller::~Controller()
@@ -23,7 +24,7 @@ void Controller::start()
 
 QString Controller::getText(int n)
 {
-    return messages.at(n);
+    return messages.value(n);
 }
 
 bool Controller::check(int n)

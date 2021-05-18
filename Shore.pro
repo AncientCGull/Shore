@@ -22,7 +22,7 @@ FORMS += \
 
 # for Qpp + OpenMP
 DEFINES += NDEBUG HAS_OPENMP
-QMAKE_CXXFLAGS+= -Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include
+QMAKE_CXXFLAGS+= -Xpreprocessor -I/usr/local/opt/libomp/include
 QMAKE_LFLAGS += -openmp -L/usr/local/opt/llvm/lib
 LIBS += -lomp #-L /usr/local/lib /usr/local/lib/libomp.dylib
 

@@ -5,15 +5,82 @@ shor::shor()
 {
 }
 
+bigint shor::check()
+{
+    //bigint a = rand(1, N/2);
+    bigint b = rand(2, std::ceil(std::log2(N+1)));
+    //emit write("a = " + QString::number(a) + " b = " + QString::number(b));
+    double y = std::log2(N);
+    double x = y/b;
+    bigint u1 = std::floor(std::pow(2, x)), u2 = std::ceil(std::pow(2, x));
+
+    if (std::pow(u1, b) == N and u1 > 0 and u1 < N/2)
+    {
+        return u1;
+    }
+    if (std::pow(u2, b) == N and u2 > 0 and u2 < N/2)
+    {
+        return u2;
+    }
+
+    return 0;
+}
+
 void shor::calculate() // number to factor
 {
-    QString isOdd = "";
+    static QString msg_step2 = "";
+    static QString msg = "";
     if (N % 2 == 0 and N > 29)
     {
         N /= 2;
-        emit write(">>N = " + QString::number(N*2) + " was odd, so we can take " + QString::number(N) + " as N");
-        isOdd = "2 ";
+        msg += "Исходное N = " + QString::number(N*2) + " четное, поэтому мы можем взять число " +
+                QString::number(N) + " как N и записать 2 в список множителей.\n";
+//        emit write(0, "Исходное N = " + QString::number(N*2) + " четное, поэтому мы можем взять число " +
+//                   QString::number(N) + " как N и записать 2 в список множителей.");
+        factors += "2 ";
+        return calculate();
     }
+
+    if (N % 2 == 0)
+    {
+        msg += "N = " + QString::number(N) + " четное, но N/2 < 15, так что продолжаем алгоритм.";
+    }
+    else
+    {
+        msg += "N = " + QString::number(N) + " нечетное, так что продолжаем алгоритм.";
+    }
+//    emit write(msg);
+//    emit write (0, "Исходное N = " + QString::number(N) + " нечетное, так что продолжаем алогитм.");
+
+    bigint x = check();
+    if (x != 0)
+    {
+        N /= x;
+        if (N > 14)
+        {
+            factors += QString::number(x) + " ";
+            msg_step2 += "Найден множитель " + QString::number(x) + "\n";
+            return calculate();
+        }
+        else
+        {
+//            msg_step2 += "Возможный множитель: " + QString::number(x) + "\n";
+            emit write (msg);
+            emit write("Возможный множитель: " + QString::number(x));
+            emit done();
+            msg = "";
+            return;
+        }
+    }
+    else
+    {
+        msg_step2 += "Равество N = a^b не выполнилось";
+    }
+
+    emit write(msg);
+    emit write(msg_step2);
+    msg = "";
+
     bigint a = rand(static_cast<bigint>(3), N - 1); // random co-prime with N
     while (gcd(a, N) != 1)
     {
@@ -25,9 +92,8 @@ void shor::calculate() // number to factor
     idx n = static_cast<idx>(std::ceil(2 * std::log2(N)));
     idx D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
 
-    emit write(">> Factoring N = " + QString::number(N) + " with coprime a = " + QString::number(a) + '\n' +
-                         ">> n = " + QString::number(n) + ", D = 2^n = " + QString::number(D) +
-                         " and 2^(2n) = " + QString::number(D * D) + '\n');
+    emit write("Факторизуем число N = " + QString::number(N) + "; в качестве взиаимно простого a возьмем "+
+               QString::number(a) + '\n');
 
     // vector with labels of the first half of the qubits
     std::vector<idx> first_subsys(n);
@@ -77,8 +143,10 @@ void shor::calculate() // number to factor
     }
     vec1_str += "]";
 
-    emit write(">> First measurement:  " + vec1_str + " " +
-                         "i.e., j = " + QString::number(n1) + " with probability " + QString::number(prob1) + '\n');
+    msg += ">> First measurement:  " + vec1_str + " " +
+            "i.e., j = " + QString::number(n1) + " with probability " + QString::number(prob1) + '\n';
+//    emit write(3, ">> First measurement:  " + vec1_str + " " +
+//                         "i.e., j = " + QString::number(n1) + " with probability " + QString::number(prob1) + '\n');
 
     bool failed = true;
     idx r1 = 0, c1 = 0;
@@ -94,8 +162,10 @@ void shor::calculate() // number to factor
     }
     if (failed)
     {
-        emit write(">> Factoring failed at stage 1, please try again!\n");
+        msg += ">> Factoring failed at stage 1, please try again!\n";
+        emit write(msg);
         emit done();
+        return;
         //std::exit(EXIT_FAILURE);
     }
     // END FIRST MEASUREMENT STAGE
@@ -114,9 +184,12 @@ void shor::calculate() // number to factor
     }
     vec2_str += "]";
 
-    emit write(">> Second measurement: " + vec2_str + " " +
-                         "i.e., j = " + QString::number(n2) +
-                         " with probability " + QString::number(prob2) + '\n');
+    msg += ">> Second measurement: " + vec2_str + " " +
+            "i.e., j = " + QString::number(n2) +
+            " with probability " + QString::number(prob2) + '\n';
+//    emit write(3, ">> Second measurement: " + vec2_str + " " +
+//                         "i.e., j = " + QString::number(n2) +
+//                         " with probability " + QString::number(prob2) + '\n');
 
     failed = true;
     idx r2 = 0, c2 = 0;
@@ -132,30 +205,42 @@ void shor::calculate() // number to factor
     }
     if (failed)
     {
-        emit write(">> Factoring failed at stage 2, please try again!\n");
+        msg += ">> Factoring failed at stage 2, please try again!\n";
+        emit write(msg);
         emit done();
+        return;
         //std::exit(EXIT_FAILURE);
     }
     // END SECOND MEASUREMENT STAGE
 
+    emit write (msg);
+    msg = "";
+
     // THIRD POST-PROCESSING STAGE
     idx r = lcm(r1, r2); // candidate order of a mod N
-    emit write(">> r = " + QString::number(r) + ", a^r mod N = " +
-                         QString::number(modpow(a, r, N)) +'\n');
+    msg += ">> r = " + QString::number(r) + ", a^r mod N = " +
+            QString::number(modpow(a, r, N)) +'\n';
+//    emit write(4, ">> r = " + QString::number(r) + ", a^r mod N = " +
+//                         QString::number(modpow(a, r, N)) +'\n');
     if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1))
     {
-        emit write(">> Possible factors: " + isOdd +
-                   QString::number(gcd(modpow(a, r / 2, N) - 1, N)) + " " +
-                   QString::number(gcd(modpow(a, r / 2, N) + 1, N)) + '\n');
+        factors += QString::number(gcd(modpow(a, r / 2, N) - 1, N)) + " ";
+        factors += QString::number(gcd(modpow(a, r / 2, N) + 1, N));
+        factors.remove("1");
+        msg += ">> Possible factors: " + factors + '\n';
+//        emit write(4, ">> Possible factors: " + factors + '\n');
     }
     else
     {
-        emit write(">> Factoring failed at stage 3, please try again!\n");
-        emit done();
+        msg += ">> Factoring failed at stage 3, please try again!\n";
+//        emit write(4, ">> Factoring failed at stage 3, please try again!\n");
+//        emit done();
         //std::exit(EXIT_FAILURE);
     }
     // END THIRD POST-PROCESSING STAGE
 
+    emit write (msg);
+    msg = "";
     emit done();
 }
 

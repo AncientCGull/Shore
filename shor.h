@@ -19,6 +19,8 @@ class shor : public QObject
 
 private:
     bigint N = 32;
+    QString factors = "";
+    bigint check();
 
 public:
     shor();

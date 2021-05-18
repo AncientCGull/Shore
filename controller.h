@@ -24,8 +24,8 @@ private:
     QStringList messages;
 
 signals:
-    void write(QString);
     void unlockButton();
+    void done();
 };
 
 #endif // CONTROLLER_H
