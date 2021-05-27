@@ -37,6 +37,7 @@ private:
     Ui::MainWindow *ui;
     Controller* contr = nullptr;
     int step = 0;
+    bool isReload = false;
     QList <QLabel*> labels;
     QList <QScrollArea*> areas;
     QFont* font;

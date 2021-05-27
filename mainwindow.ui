@@ -240,7 +240,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Введите число, которое необходимо факторизовать, в поле ниже</string>
+             <string>Введите число в поле ниже нажмите кнопку &quot;Начать факторизацию&quot;</string>
             </property>
            </widget>
           </item>

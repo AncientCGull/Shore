@@ -138,7 +138,7 @@ void shor::calculate()
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
     double x1 = static_cast<double>(n1) / D; // multiple of 1/r
 
-    QString vec1_str = "[";
+    QString vec1_str = "[ ";
     for (auto val : vect_results1)
     {
         vec1_str += QString::number(val) + " ";
@@ -176,7 +176,7 @@ void shor::calculate()
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
     double x2 = static_cast<double>(n2) / D; // multiple of 1/r
 
-    QString vec2_str = "[";
+    QString vec2_str = "[ ";
     for (auto val : vect_results2)
     {
         vec2_str += QString::number(val) + " ";
@@ -212,7 +212,7 @@ void shor::calculate()
     msg = "";
 
     // THIRD POST-PROCESSING STAGE
-    idx r = lcm(r1, r2); // candidate order of a mod N
+    idx r = lcm(r1, r2); // candidate order of a mod N (ищем НОК)
     msg += "r = " + QString::number(r) + ", a<sup>r</sup> mod N = " +
             QString::number(modpow(x, r, N)) + "<br>";
 

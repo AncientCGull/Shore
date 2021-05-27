@@ -74,6 +74,12 @@ void MainWindow::unlockButton() // слот – разблокировка кн�
 
 void MainWindow::reload() // перезапуск для следующего алгоритма
 {
+    isReload = true;
+    if (ui->pushButton_step->isEnabled())
+    {
+        return;
+    }
+
     ui->pushButton_factor->setEnabled(true);
     ui->lineEdit_num->setEnabled(true);
     int last = 4;
@@ -92,7 +98,7 @@ void MainWindow::reload() // перезапуск для следующего а
 
 void MainWindow::on_pushButton_factor_clicked() // основная ф-ия, запускаем алгоритм
 {
-    ui->label->setVisible(false);
+    ui->label->setText("Нажимайте кнопку \"Следующий шаг\" до конца алогритма");
 
     for (auto a : areas)
     {
@@ -138,16 +144,23 @@ void MainWindow::on_pushButton_factor_clicked() // основная ф-ия, з�
 
 void MainWindow::on_pushButton_step_clicked() // очередной шаг
 {
+    if (ui->label->isVisible())
+    {
+        ui->label->setVisible(false);
+    }
     if (contr != nullptr)
     {
         writeMsg(step, contr->getText(step)); // пишем текст шана
     }
     step++;
 
-
     if (not contr->check(step)) // проверяем готовность следующего шага
     {
         ui->pushButton_step->setDisabled(true);
+        if (isReload)
+        {
+            reload();
+        }
         return;
     }
     if (ui->checkBox_auto->isChecked()) // проверяем автошаг (включено только в отладке)
@@ -163,7 +176,7 @@ void MainWindow::on_action_help_triggered() // вывод справки
         // если алгоритм выполняется прямо сейчас
         help += "В данный момент программа выполняет вычисления. Пожалуйста, дождитесь результата.";
     }
-    QMessageBox* box = new QMessageBox(QMessageBox::NoIcon, "Помощь", help, QMessageBox::Close, this);
-    box->setFont(*font);
+    QMessageBox* box = new QMessageBox(QMessageBox::Information, "Помощь", help, QMessageBox::Close, this);
+//    box->setFont(*font);
     box->show();
 }
