@@ -36,7 +36,7 @@
              <x>0</x>
              <y>0</y>
              <width>249</width>
-             <height>102</height>
+             <height>139</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
@@ -71,7 +71,7 @@
              <x>0</x>
              <y>0</y>
              <width>250</width>
-             <height>102</height>
+             <height>139</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
@@ -106,7 +106,7 @@
              <x>0</x>
              <y>0</y>
              <width>249</width>
-             <height>102</height>
+             <height>139</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
@@ -145,7 +145,7 @@
              <x>0</x>
              <y>0</y>
              <width>378</width>
-             <height>101</height>
+             <height>138</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
@@ -180,7 +180,7 @@
              <x>0</x>
              <y>0</y>
              <width>378</width>
-             <height>101</height>
+             <height>138</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
@@ -223,19 +223,6 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <spacer name="horizontalSpacer">
@@ -253,7 +240,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Введите число</string>
+             <string>Введите число, которое необходимо факторизовать, в поле ниже</string>
             </property>
            </widget>
           </item>
@@ -333,7 +320,7 @@
    </property>
    <widget class="QMenu" name="menu_file">
     <property name="title">
-     <string>Файл</string>
+     <string>Справка</string>
     </property>
     <addaction name="action_help"/>
    </widget>
@@ -342,7 +329,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_help">
    <property name="text">
-    <string>Помощь</string>
+    <string>Справка</string>
    </property>
   </action>
  </widget>

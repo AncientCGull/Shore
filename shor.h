@@ -21,6 +21,7 @@ private:
     bigint N = 32;
     QString factors = "";
     bigint check();
+    bigint b; // для проверки во 2 шаге
 
 public:
     shor();

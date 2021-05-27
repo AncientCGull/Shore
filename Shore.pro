@@ -1,4 +1,4 @@
-QT       += core gui widgets concurrent
+QT       += core gui widgets concurrent testlib
 
 CONFIG += c++11 sdk_no_version_check
 
